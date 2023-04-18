@@ -1,25 +1,41 @@
-import logo from './logo.svg';
+import {useEffect, useState} from 'react';
+
 import './App.css';
 
 function App() {
+  const [tweets, setTweets] = useState(null);
+
+  const fetchTweets = async () => {
+    const res = await fetch('/api/tweets');
+    const data = await res.json();
+    console.log(data.data);
+    setTweets(data.data);
+  }
+
+
+  useEffect(() => {
+    fetchTweets();
+  }, [])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <h1>Tweets App</h1>
+
+     {tweets && tweets.map(tweet => (
+      <div>
+        <h3>{tweet.title}</h3>
+        <p>{tweet.body}</p>
+      </div>
+     ))}
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+
